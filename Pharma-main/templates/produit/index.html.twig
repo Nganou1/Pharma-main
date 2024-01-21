@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit index{% endblock %}
+
+{% block body %}
+    <h1>Produit index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Notice</th>
+                <th>Expiration</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.id }}</td>
+                <td>{{ produit.name }}</td>
+                <td>{{ produit.price }}</td>
+                <td>{{ produit.quantity }}</td>
+                <td>{{ produit.notice }}</td>
+                <td>{{ produit.expirationDate ? produit.expirationDate|date('Y-m-d') : '' }}</td>
+                <td>{{ produit.image }}</td>
+                <td>
+                    <a href="{{ path('app_produit_show', {'id': produit.id}) }}">show</a>
+                    <a href="{{ path('app_produit_edit', {'id': produit.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        {% for produit in produits %}            
+            <div class="row">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card overflow-hidden rounded-2">
+                <div class="position-relative">
+                    <a href="javascript:void(0)"><img src="{{asset('images/')}}{{produit.image}}" class="card-img-top rounded-0" alt="..."></a>
+                <div class="card-body pt-3 p-4">
+                    <h6 class="fw-semibold fs-4">{{produit.name}}</h6>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <h6 class="fw-semibold fs-4 mb-0">{{produit.price}} FCFA<span class="ms-2 fw-normal text-muted fs-3"></span></h6>
+                        {% if produit.quantity >= 2 %}
+                            <button class="btn  btn-success">Stock({{produit.quantity}})</button>
+                        {% else %}
+                            <button class="btn  btn-danger">Stock({{produit.quantity}})</button>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-4">
+                        <a href="{{ path('app_produit_show', {'id': produit.id}) }}" class="btn btn-outline-primary">Detail</a>
+                        <a href="{{ path('app_produit_edit', {'id': produit.id}) }}" class="btn btn-outline-success">Modifier</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    <a href="{{ path('app_produit_new') }}">Create new</a>
+{% endblock %}

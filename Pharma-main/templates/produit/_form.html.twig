@@ -1,0 +1,104 @@
+{# {{ form_start(form) }}
+{{ form_widget(form) }}
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }} #}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<body>
+		<style>
+			.container {
+				min-height: 317px;
+				border: 5px solid #dddddd;
+				display: flex;
+				margin-top: 15px;
+				align-items: center;
+				justify-content: center;
+				color: #cccccc
+			}
+            .image-preview{
+                display: none;
+                width: 100%;
+                height : 317px;
+            }
+		</style>
+		<div class="card">
+			<div class="card-body">
+				<form action="" method="POST" enctype="multipart/form-data">
+					<div class="row mb-4">
+						<div class="col">
+							<fieldset>
+								<legend>Informations néccessaires</legend>
+								<label for="">Nom du produit</label>
+								<input type="text" name="nom" id="" class="form-control mb-4">
+
+								<label for="">Prix du produit</label>
+								<input type="number" name="prix" id="" class="form-control mb-4">
+
+								<label for="">Quantité du produit</label>
+								<input type="number" name="qte" id="" class="form-control mb-4">
+
+								<label for="">Utilisation du produit</label>
+								<input type="text" name="notice" id="" class="form-control mb-4">
+
+								<label for="">Type du produit</label>
+								<select name="type" id="" class="form-select">
+									{% for type in types %}
+										<option value="{{type.description}}">{{type.description}}</option>
+									{% endfor %}
+								</select>
+
+							</fieldset>
+						</div>
+						<div class="col">
+							<fieldset>
+								<legend>Image du produit</legend>
+								<label for="">Image</label>
+								<input type="file" name="image" class="form-control" id="inpFile">
+								<div class="container" id="container">
+									<img src="  " alt="" srcset="" class="image-preview">
+									<span class="image-preview-text">
+										Apercu de la photo
+									</span>
+								</div>
+							</fieldset>
+						</div>
+
+					</div>
+                    <label for="">Date d'expiration</label>
+                    <input type="date" name="expiration" id="" class="form-control mb-4">
+					<input type="submit" value="Enregistrer" name="submit" class="btn btn-primary">
+				</form>
+			</div>
+		</div>
+	</body>
+
+	<script>
+		const inpFile = document.getElementById("inpFile");
+        const container = document.getElementById("container");
+        const preview = container.querySelector(".image-preview");
+        const text = container.querySelector(".image-preview-text");
+        inpFile.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+        const reader = new FileReader();
+        text.style.display = "none";
+        preview.style.display = "block";
+
+        reader.addEventListener("load", function () {
+        preview.setAttribute("src", this.result);
+        });
+
+        reader.readAsDataURL(file);
+        } else {
+        text.style.display = null;
+        preview.style.display = null;
+        }
+        });
+	</script>
+</html>
